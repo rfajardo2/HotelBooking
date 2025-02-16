@@ -68,11 +68,18 @@ namespace HotelBooking.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoom(int id, [FromBody] Room room)
         {
+            if (room == null || id != room.Id)
+                return BadRequest("Invalid room data.");
+
             var existingRoom = await _unitOfWork.Rooms.GetByIdAsync(id);
             if (existingRoom == null) return NotFound();
 
             existingRoom.BasePrice = room.BasePrice;
             existingRoom.Taxes = room.Taxes;
+            existingRoom.Type = room.Type;
+            existingRoom.HotelId = room.HotelId;
+            existingRoom.Location = room.Location;
+
 
             await _unitOfWork.Rooms.UpdateAsync(existingRoom);
             await _unitOfWork.CompleteAsync();

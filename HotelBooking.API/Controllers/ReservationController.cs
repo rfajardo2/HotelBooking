@@ -23,21 +23,7 @@ namespace HotelBooking.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddReservation([FromBody] Reservation reservation, [FromServices] EmailService emailService)
         {
-            //if (reservation == null) return BadRequest("Invalid reservation data");
-
-            //// Buscar el cliente asociado a la reserva
-            //var client = await _unitOfWork.Clients.GetByIdAsync(reservation.ClientId);
-            //if (client == null) return BadRequest("Client not found");
-
-            //// Guardar la reserva en la base de datos
-            //await _unitOfWork.Reservations.AddAsync(reservation);
-            //await _unitOfWork.CompleteAsync();
-
-            //// Enviar correo de confirmación al cliente
-            //string emailBody = $"Hola {client.FirstName}, tu reserva en el hotel con ID {reservation.HotelId} ha sido confirmada.";
-            //await emailService.SendEmailAsync(client.Email, "Confirmación de Reserva", emailBody);
-
-            //return CreatedAtAction(nameof(GetReservationById), new { id = reservation.Id }, reservation);
+          
 
             try
             {
@@ -48,9 +34,42 @@ namespace HotelBooking.API.Controllers
 
                 if (reservation == null) return BadRequest("Invalid reservation data");
 
-                //Buscar el cliente asociado a la reserva
+                if (reservation.CheckOut <= reservation.CheckIn)
+                {
+                    return BadRequest("Check-out date must be after check-in date.");
+                }
+
+
+
+                var hotelExists = await _unitOfWork.Hotels.GetByIdAsync(reservation.HotelId);
+                if (hotelExists == null) return NotFound("Hotel not found.");
+
+                var roomExists = await _unitOfWork.Rooms.GetByIdAsync(reservation.RoomId);
+                if (roomExists == null) return NotFound("Room not found.");
+
                 var client = await _unitOfWork.Clients.GetByIdAsync(reservation.ClientId);
                 if (client == null) return BadRequest("Client not found");
+
+                if (string.IsNullOrEmpty(client.EmergencyContactName))
+                {
+                    return BadRequest("An emergency contact is required for reservations.");
+                }
+
+                var roomOccupied = await _unitOfWork.Reservations.AnyAsync(r =>
+                                        r.RoomId == reservation.RoomId &&
+                                        ((reservation.CheckIn >= r.CheckIn && reservation.CheckIn < r.CheckOut) ||
+                                         (reservation.CheckOut > r.CheckIn && reservation.CheckOut <= r.CheckOut)));
+
+                if (roomOccupied)
+                {
+                    return BadRequest("The selected room is already booked for the given dates.");
+                }
+
+                if (string.IsNullOrEmpty(client.FirstName) || string.IsNullOrEmpty(client.LastName) ||
+                     string.IsNullOrEmpty(client.Email) || string.IsNullOrEmpty(client.DocumentNumber))
+                {
+                    return BadRequest("Guest information is incomplete. Please provide First Name, Last Name, Email, and Document Number.");
+                }
 
                 //Buscar el hotle asociado a la reserva
                 var hotel = await _unitOfWork.Hotels.GetByIdAsync(reservation.HotelId);

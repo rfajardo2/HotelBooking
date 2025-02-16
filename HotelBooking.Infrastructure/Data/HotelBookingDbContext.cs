@@ -40,6 +40,14 @@ namespace HotelBooking.Infrastructure.Data
                 .HasForeignKey(r => r.ClientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Room>()
+               .Property(r => r.BasePrice)
+               .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Room>()
+                .Property(r => r.Taxes)
+                .HasColumnType("decimal(18,2)");
+
         }
     }
 }

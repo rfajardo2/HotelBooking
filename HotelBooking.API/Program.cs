@@ -57,14 +57,40 @@ using (var scope = app.Services.CreateScope())
     }
 
     // ?? Insertar Clientes
+    // ?? Insertar Clientes
     if (!context.Clients.Any())
     {
         context.Clients.AddRange(
-            new Client { FirstName = "Juan", LastName = "Pérez", Email = "juan.perez@gmail.com", PhoneNumber = "987654321" },
-            new Client { FirstName = "Ana", LastName = "López", Email = "ana.lopez@gmail.com", PhoneNumber = "923456789" }
+            new Client
+            {
+                FirstName = "Juan",
+                LastName = "Pérez",
+                Email = "rfajardomerco@gmail.com",
+                PhoneNumber = "987654321",
+                DateOfBirth = new DateTime(1990, 5, 15), // Fecha de nacimiento
+                Gender = "Masculino",
+                DocumentType = "DNI",
+                DocumentNumber = "12345678",
+                EmergencyContactName = "Carlos Pérez",  // Contacto de emergencia
+                EmergencyContactPhone = "987654321"
+            },
+            new Client
+            {
+                FirstName = "Ana",
+                LastName = "López",
+                Email = "rfajardomerco@gmail.com",
+                PhoneNumber = "923456789",
+                DateOfBirth = new DateTime(1995, 8, 22), // Fecha de nacimiento
+                Gender = "Femenino",
+                DocumentType = "DNI",
+                DocumentNumber = "87654321",
+                EmergencyContactName = "María López",  // Contacto de emergencia
+                EmergencyContactPhone = "923456789"
+            }
         );
         context.SaveChanges(); // Guardamos los clientes antes de continuar
     }
+
 
     // ?? Insertar Reservas al Final (Después de que existen Hoteles, Habitaciones y Clientes)
     if (!context.Reservations.Any())
