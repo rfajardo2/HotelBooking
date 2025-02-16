@@ -1,0 +1,16 @@
+C:\programasD\HotelBooking\HotelBooking.Application\bin\Debug\net8.0\HotelBooking.Application.deps.json
+C:\programasD\HotelBooking\HotelBooking.Application\bin\Debug\net8.0\HotelBooking.Application.dll
+C:\programasD\HotelBooking\HotelBooking.Application\bin\Debug\net8.0\HotelBooking.Application.pdb
+C:\programasD\HotelBooking\HotelBooking.Application\bin\Debug\net8.0\HotelBooking.Domain.dll
+C:\programasD\HotelBooking\HotelBooking.Application\bin\Debug\net8.0\HotelBooking.Domain.pdb
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.csproj.AssemblyReference.cache
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.AssemblyInfoInputs.cache
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.AssemblyInfo.cs
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.csproj.CoreCompileInputs.cache
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.sourcelink.json
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.csproj.CopyComplete
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.dll
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\refint\HotelBooking.Application.dll
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\HotelBooking.Application.pdb
+C:\programasD\HotelBooking\HotelBooking.Application\obj\Debug\net8.0\ref\HotelBooking.Application.dll
