@@ -15,6 +15,7 @@ SendGrid para envío de correos
 
 📂 Estructura del Proyecto
 📦 HotelBooking
+
  ┣ 📂 HotelBooking.API             # Capa de presentación (Controllers, Middlewares)
  ┣ 📂 HotelBooking.Application     # Casos de uso, servicios, lógica de negocio
  ┣ 📂 HotelBooking.Domain          # Entidades, interfaces, excepciones
