@@ -1,6 +1,7 @@
 ﻿using HotelBooking.Application.Interfaces;
 using HotelBooking.Application.Services;
 using HotelBooking.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace HotelBooking.API.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddReservation([FromBody] Reservation reservation, [FromServices] EmailService emailService)
         {
@@ -119,9 +120,9 @@ namespace HotelBooking.API.Controllers
             }
         }
 
-       
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetReservations()
         {
@@ -129,7 +130,7 @@ namespace HotelBooking.API.Controllers
             return Ok(reservations);
         }
 
-        
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReservationById(int id)
         {
@@ -137,17 +138,54 @@ namespace HotelBooking.API.Controllers
             return reservation == null ? NotFound() : Ok(reservation);
         }
 
+        [Authorize]
         [HttpPatch("{id}/cancel")]
-        public async Task<IActionResult> CancelReservation(int id)
+        public async Task<IActionResult> CancelReservation(int id, [FromServices] EmailService emailService)
         {
             var reservation = await _unitOfWork.Reservations.GetByIdAsync(id);
-            if (reservation == null) return NotFound();
+            if (reservation == null) return NotFound("❌ No se encontró la reserva especificada.");
 
             reservation.Status = "Canceled";
             await _unitOfWork.Reservations.UpdateAsync(reservation);
             await _unitOfWork.CompleteAsync();
 
-            return Ok(reservation);
+            // Obtener detalles del cliente y hotel
+            var client = await _unitOfWork.Clients.GetByIdAsync(reservation.ClientId);
+            var hotel = await _unitOfWork.Hotels.GetByIdAsync(reservation.HotelId);
+
+            if (client != null && hotel != null)
+            {
+                // 📩 **Mensaje de cancelación de reserva**
+                string emailBody = $@"
+                <html>
+                <body style='font-family: Arial, sans-serif;'>
+                    <h2 style='color: #C0392B;'>❌ Tu Reserva ha sido Cancelada</h2>
+                    <p>Hola <strong>{client.FirstName} {client.LastName}</strong>,</p>
+                    <p>Lamentamos informarte que tu reserva en <strong>{hotel.Name}</strong> ha sido <strong style='color: red;'>CANCELADA</strong>.</p>
+
+                    <h3>📌 Detalles de la Reserva Cancelada:</h3>
+                    <ul>
+                        <li><strong>Hotel:</strong> {hotel.Name}</li>
+                        <li><strong>Habitación:</strong> # {reservation.RoomId}</li>
+                        <li><strong>Check-in Original:</strong> {reservation.CheckIn:dddd, dd MMMM yyyy} a las {reservation.CheckIn:HH:mm} hrs</li>
+                        <li><strong>Check-out Original:</strong> {reservation.CheckOut:dddd, dd MMMM yyyy} a las {reservation.CheckOut:HH:mm} hrs</li>
+                        <li><strong>Estado:</strong> <span style='color: red;'>CANCELADO</span></li>
+                    </ul>
+
+                    <p style='color: #D35400;'><strong>⚠ Si esta cancelación fue un error, por favor contáctanos lo antes posible al +123 456 789.</strong></p>
+
+                    <p>Esperamos verte en otra ocasión. ¡Gracias por considerar <strong>Hotel Booking</strong>! 😊</p>
+
+                    <hr>
+                    <p style='font-size: 12px; color: #777;'>Este es un mensaje automático, por favor no respondas a este correo.</p>
+                </body>
+                </html>";
+
+                await emailService.SendEmailAsync(client.Email, "❌ Cancelación de tu Reserva en Hotel Booking", emailBody);
+            }
+
+            return Ok(new { message = "✅ La reserva ha sido cancelada con éxito.", reservation });
         }
+
     }
 }

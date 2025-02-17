@@ -1,6 +1,7 @@
 ﻿using HotelBooking.Application.Interfaces;
 using HotelBooking.Application.Services;
 using HotelBooking.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBooking.API.Controllers
@@ -36,7 +37,7 @@ namespace HotelBooking.API.Controllers
             }
 
 
-
+            [Authorize]
             [HttpGet]
             public async Task<IActionResult> GetHotels()
             {
@@ -44,6 +45,7 @@ namespace HotelBooking.API.Controllers
                 return Ok(hotels);
             }
 
+            [Authorize]
             [HttpGet("{id}")]
             public async Task<IActionResult> GetHotelById(int id)
             {
@@ -51,6 +53,7 @@ namespace HotelBooking.API.Controllers
                 return hotel == null ? NotFound() : Ok(hotel);
             }
 
+            [Authorize]
             [HttpPost]
             public async Task<IActionResult> AddHotel([FromBody] Hotel hotel)
             {
@@ -59,6 +62,7 @@ namespace HotelBooking.API.Controllers
                 return CreatedAtAction(nameof(GetHotelById), new { id = hotel.Id }, hotel);
             }
 
+            [Authorize]
             [HttpPut("{id}")]
             public async Task<IActionResult> UpdateHotel(int id, [FromBody] Hotel hotel)
             {
@@ -78,6 +82,7 @@ namespace HotelBooking.API.Controllers
                 return NoContent();
             }
 
+            [Authorize]
             [HttpPatch("{id}/status")]
             public async Task<IActionResult> ToggleHotelStatus(int id)
             {
@@ -91,6 +96,7 @@ namespace HotelBooking.API.Controllers
                 return Ok(hotel);
             }
 
+            [Authorize]
             [HttpDelete("{id}")]
             public async Task<IActionResult> DeleteHotel(int id)
             {

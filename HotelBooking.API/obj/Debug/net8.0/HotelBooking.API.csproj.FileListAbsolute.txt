@@ -177,3 +177,5 @@ C:\programasD\HotelBooking\HotelBooking.API\bin\Debug\net8.0\zh-Hant\Microsoft.C
 C:\programasD\HotelBooking\HotelBooking.API\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\programasD\HotelBooking\HotelBooking.API\bin\Debug\net8.0\SendGrid.dll
 C:\programasD\HotelBooking\HotelBooking.API\bin\Debug\net8.0\StarkbankEcdsa.dll
+C:\programasD\HotelBooking\HotelBooking.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\programasD\HotelBooking\HotelBooking.API\bin\Debug\net8.0\Microsoft.Bcl.Memory.dll

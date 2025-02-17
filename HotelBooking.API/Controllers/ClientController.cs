@@ -1,5 +1,6 @@
 ﻿using HotelBooking.Domain.Entities;
 using HotelBooking.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace HotelBooking.API.Controllers
         }
 
         // GET /api/clients (Obtener todos los clientes)
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Client>>> GetClients()
         {
@@ -26,6 +28,7 @@ namespace HotelBooking.API.Controllers
         }
 
         // GET /api/clients/{id} (Obtener un cliente por ID)
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Client>> GetClient(int id)
         {
@@ -38,6 +41,7 @@ namespace HotelBooking.API.Controllers
         }
 
         // POST /api/clients (Crear un cliente)
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Client>> CreateClient(Client client)
         {
@@ -53,6 +57,7 @@ namespace HotelBooking.API.Controllers
         }
 
         // PUT /api/clients/{id} (Actualizar un cliente)
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateClient(int id, Client client)
         {
@@ -83,6 +88,7 @@ namespace HotelBooking.API.Controllers
         }
 
         //  DELETE /api/clients/{id} (Eliminar un cliente)
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient(int id)
         {
